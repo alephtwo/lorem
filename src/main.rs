@@ -13,21 +13,21 @@ fn main() {
         .arg(
             Arg::with_name("number")
                 .value_name("number")
-                .validator(is_number)
+                .value_parser(clap::value_parser!(u16).range(1..50))
                 .required(true),
         )
         .arg(
             Arg::with_name("type")
                 .value_name("type")
-                .possible_values(&["characters", "words", "paragraphs"])
+                .value_parser(["characters", "words", "paragraphs"])
                 .required(true),
         )
         .get_matches();
 
-    let number = matches.value_of("number").unwrap().parse::<usize>().unwrap();
-    let result_type = matches.value_of("type").unwrap();
+    let number: u16 = *matches.get_one("number").expect("required");
+    let result_type: &String = matches.get_one("type").expect("required");
 
-    match result_type {
+    match result_type.as_str() {
         "characters" => print!("{}", generate(number, " ", "")),
         "words" => print!("{}", generate(number, " ", " ")),
         "paragraphs" => print_paragraphs(number),
@@ -35,18 +35,11 @@ fn main() {
     }
 }
 
-fn is_number(val: String) -> Result<(), String> {
-    match val.parse::<i32>() {
-        Ok(_val) => Ok(()),
-        Err(_err) => Err(format!("{} is not a number", val).to_owned()),
-    }
-}
-
 fn get_paragraphs() -> Vec<String> {
     serde_json::from_str(include_str!("paragraphs.json")).unwrap()
 }
 
-fn generate(number: usize, joiner: &str, splitter: &str) -> String {
+fn generate(number: u16, joiner: &str, splitter: &str) -> String {
     get_paragraphs()
         .join(joiner)
         .split(splitter)
@@ -55,17 +48,17 @@ fn generate(number: usize, joiner: &str, splitter: &str) -> String {
         .collect::<Vec<String>>()
         .iter()
         .cycle()
-        .take(number)
+        .take(number.into())
         .map(|t| t.to_string())
         .collect::<Vec<String>>()
         .join(splitter)
 }
 
-fn print_paragraphs(number: usize) {
+fn print_paragraphs(number: u16) {
     let paragraphs = get_paragraphs()
         .iter()
         .cycle()
-        .take(number)
+        .take(number.into())
         .map(|t| t.to_string())
         .collect::<Vec<String>>()
         .join("\n\n");

@@ -4,7 +4,6 @@ extern crate serde_json;
 extern crate clap;
 
 use clap::{Arg, Command};
-
 fn main() {
     let matches = Command::new(crate_name!())
         .about(crate_description!())

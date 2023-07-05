@@ -3,21 +3,21 @@ extern crate serde_json;
 #[macro_use]
 extern crate clap;
 
-use clap::{App, Arg};
+use clap::{Arg, Command};
 
 fn main() {
-    let matches = App::new(crate_name!())
+    let matches = Command::new(crate_name!())
         .about(crate_description!())
         .version(crate_version!())
         .author(crate_authors!())
         .arg(
-            Arg::with_name("number")
+            Arg::new("number")
                 .value_name("number")
                 .value_parser(clap::value_parser!(u16).range(1..50))
                 .required(true),
         )
         .arg(
-            Arg::with_name("type")
+            Arg::new("type")
                 .value_name("type")
                 .value_parser(["characters", "words", "paragraphs"])
                 .required(true),

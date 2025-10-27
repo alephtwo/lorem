@@ -1,11 +1,12 @@
 # lorem
+
 Generate lorem ipsum text.
 
 This is a Rust implementation of [jnunemaker/lorem](https://github.com/jnunemaker/lorem).
 
 ## Usage
 
-```
+```text
 USAGE:
     lorem <number> <type>
 
@@ -14,7 +15,7 @@ FLAGS:
     -V, --version    Prints version information
 
 ARGS:
-    <number>    
+    <number>
     <type>       [possible values: characters, words, paragraphs]
 ```
 

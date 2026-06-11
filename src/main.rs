@@ -1,41 +1,13 @@
-extern crate serde_json;
+use clap::Parser;
 
-#[macro_use]
-extern crate clap;
-
-use clap::{Arg, Command};
 fn main() {
-    let matches = Command::new(crate_name!())
-        .about(crate_description!())
-        .version(crate_version!())
-        .author(crate_authors!())
-        .arg(
-            Arg::new("number")
-                .value_name("number")
-                .value_parser(clap::value_parser!(u16).range(1..50))
-                .required(true),
-        )
-        .arg(
-            Arg::new("type")
-                .value_name("type")
-                .value_parser(["characters", "words", "paragraphs"])
-                .required(true),
-        )
-        .get_matches();
-
-    let number: u16 = *matches.get_one("number").expect("required");
-    let result_type: &String = matches.get_one("type").expect("required");
-
-    match result_type.as_str() {
-        "characters" => print!("{}", generate(number, " ", "")),
-        "words" => print!("{}", generate(number, " ", " ")),
-        "paragraphs" => print_paragraphs(number),
+    let args = Cli::parse();
+    match args.result_type.as_str() {
+        "characters" => print!("{}", generate(args.number, " ", "")),
+        "words" => print!("{}", generate(args.number, " ", " ")),
+        "paragraphs" => print_paragraphs(args.number),
         _ => eprintln!("how on earth did you get here?"),
     }
-}
-
-fn get_paragraphs() -> Vec<String> {
-    serde_json::from_str(include_str!("paragraphs.json")).unwrap()
 }
 
 fn generate(number: u16, joiner: &str, splitter: &str) -> String {
@@ -63,4 +35,18 @@ fn print_paragraphs(number: u16) {
         .join("\n\n");
 
     print!("{}", paragraphs);
+}
+
+fn get_paragraphs() -> Vec<String> {
+    serde_json::from_str(include_str!("paragraphs.json")).unwrap()
+}
+
+#[derive(Parser)]
+#[command(version, about)]
+struct Cli {
+    #[arg(required = true, value_parser = clap::value_parser!(u16).range(1..50))]
+    number: u16,
+
+    #[arg(required = true, value_name = "TYPE", value_parser = ["characters", "words", "paragraphs"])]
+    result_type: String,
 }

@@ -1,3 +1,5 @@
 [tools]
 "cargo:cargo-edit" = "latest"
+"cargo:cargo-mutants" = "latest"
+"cargo:cargo-nextest" = "latest"
 rust = "latest"

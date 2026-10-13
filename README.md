@@ -2,7 +2,8 @@
 
 Generate lorem ipsum text.
 
-This is a Rust implementation of [jnunemaker/lorem](https://github.com/jnunemaker/lorem).
+This is a Rust implementation of
+[jnunemaker/lorem](https://github.com/jnunemaker/lorem).
 
 ## Usage
 

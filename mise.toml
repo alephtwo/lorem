@@ -2,4 +2,6 @@
 "cargo:cargo-edit" = "latest"
 "cargo:cargo-mutants" = "latest"
 "cargo:cargo-nextest" = "latest"
+rumdl = "latest"
 rust = "latest"
+yamllint = "latest"
